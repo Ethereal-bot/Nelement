@@ -66,11 +66,16 @@ android {
         // Comment to run on Android 12
 //        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
+    
     buildTypes {
         debug {
             if (project.hasProperty("coverage")) {
                 testCoverageEnabled = project.properties["coverage"] == "true"
             }
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -112,16 +117,28 @@ android {
         pickFirsts.add("META-INF/LICENSE-notice.md")
         pickFirsts.add("MANIFEST.MF")
     }
+
+    flavorDimensions "distribution"
+    productFlavors {
+        fdroid {
+            dimension "distribution"
+            applicationIdSuffix ".fdroid"
+            versionNameSuffix "-fdroid"
+        }
+        playstore {
+            dimension "distribution"
+        }
+    }
+
     splits {
         abi {
             enable true
             reset()
             include 'armeabi-v7a', 'arm64-v8a', 'x86_64' // 根据需求选择架构
-            universalApk true // 不生成包含所有架构的完整 APK
+            universalApk false // 不生成包含所有架构的完整 APK
         }
     }
 }
-
 dependencies {
 
     implementation project(":vector-config")

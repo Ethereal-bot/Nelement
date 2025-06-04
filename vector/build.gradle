@@ -125,9 +125,6 @@ android {
                 versionNameSuffix "-fdroid"
             }
         }
-        playstore {
-            dimension "distribution"
-        }
     splits {
         abi {
             enable true

@@ -112,6 +112,14 @@ android {
         pickFirsts.add("META-INF/LICENSE-notice.md")
         pickFirsts.add("MANIFEST.MF")
     }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a', 'x86_64' // 根据需求选择架构
+            universalApk true // 不生成包含所有架构的完整 APK
+        }
+    }
 }
 
 dependencies {

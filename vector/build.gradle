@@ -126,7 +126,7 @@ android {
                 versionNameSuffix "-fdroid"
             }
         }
-    signingConfigs {
+    SigningConfig {
         release {
             // 使用环境变量或从 local.properties 中读取签名信息
             def keystorePropertiesFile = rootProject.file("local.properties")

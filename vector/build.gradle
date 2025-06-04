@@ -128,13 +128,11 @@ android {
         playstore {
             dimension "distribution"
         }
-    }
-
     splits {
         abi {
             enable true
             reset()
-            include 'armeabi-v7a', 'arm64-v8a', 'x86_64' // 根据需求选择架构
+            include "armeabi-v7a", "arm64-v8a", "x86_64" // 根据需求选择架构
             universalApk false // 不生成包含所有架构的完整 APK
         }
     }

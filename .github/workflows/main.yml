@@ -73,4 +73,4 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Release X"
-          files: vector-app/build/outputs/apk/fdroid/release/*.apk
+          files: vector-app/build/outputs/apk/fdroid/release/*-unsigned-signed.apk

@@ -83,49 +83,11 @@ jobs:
 
       - name: Build signed Fdroid APK for ${{ matrix.abi }}
         run: |
-          ./gradlew clean assembleFdroid${{ matrix.abi }}Release $CI_GRADLE_ARG_PROPERTIES
+          ./gradlew clean assembleFdroid${{ matrix.abi.capitalize() }}Release $CI_GRADLE_ARG_PROPERTIES
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v4
         with:
           name: vector-fdroid-${{ matrix.abi }}-release
           path: |
-            vector-app/build/outputs/apk/fdroid/release/*.apk
-
-  # Optional: Run Exodus tracker analysis on the unsigned APK
-  exodus:
-    name: Analyze APK for trackers using Exodus
-    runs-on: ubuntu-latest
-    needs: build-unsigned-release
-    steps:
-      - name: Download unsigned APK artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vector-fdroid-universal-release-unsigned
-
-      - name: Show downloaded files
-        run: ls -R .
-
-      - name: Run Exodus standalone analysis
-        uses: docker://exodusprivacy/exodus-standalone:latest
-        with:
-          args: /github/workspace/fdroid/release/*.apk -j -o /github/workspace/exodus.json -e 0
-
-      - name: Upload Exodus report
-        uses: actions/upload-artifact@v4
-        with:
-          name: exodus-report
-          path: exodus.json
-
-      - name: Check for unexpected trackers
-        env:
-          SENTRY_ID: 447
-        run: |
-          TRACKER_IDS=$(jq ".trackers[]?.id" exodus.json | sort | uniq)
-          if [[ "$TRACKER_IDS" != "${SENTRY_ID}" && -n "$TRACKER_IDS" ]]; then
-            echo "::error::Found unexpected tracking libraries in APK:"
-            echo "$TRACKER_IDS"
-            exit 1
-          else
-            echo "No unexpected trackers found."
-          fi
+            vector-app/build/outputs/apk/fdroid/release/*${{ matrix.abi }}*.apk

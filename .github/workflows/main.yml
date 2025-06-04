@@ -41,10 +41,10 @@ jobs:
         id: sign_app
         with:
           releaseDir: vector-app/build/outputs/apk/fdroid/release
-          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
-          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          signingKey: ${{ secrets.SIGNING_KEYSTORE }}
+          keyAlias: ${{ secrets.SIGNING_ALIAS }}
+          keyStorePassword: ${{ secrets.SIGNING_STOREPASS }}
+          keyPassword: ${{ secrets.SIGNING_KEYPASS }}
           buildToolsVersion: 36.0.0
 
       # 分割签名后的文件

@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vector-fdroid-release-all
-          path: vector-app/build/outputs/apk/fdroid/release/*.apk
+          path: vector-app/build/outputs/apk/fdroid/release/*-unsigned-signed.apk
 
       # 如果还需要自动创建GitHub Release，请保留以下步骤，并根据需要调整files字段
       - name: Example Release

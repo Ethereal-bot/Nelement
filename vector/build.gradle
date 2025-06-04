@@ -76,7 +76,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release // 应用签名配置
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -127,16 +127,14 @@ android {
             }
         }
     signingConfigs {
-        release {
-            // 使用环境变量或从 local.properties 中读取签名信息
-            def keystorePropertiesFile = rootProject.file("local.properties")
-            def keystoreProperties = new Properties()
-            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+        register("release") {
+            def props = new Properties()
+            props.load(rootProject.file("local.properties").newInputStream())
 
-            storeFile file(keystoreProperties['MYAPP_RELEASE_STORE_FILE'])
-            storePassword keystoreProperties['MYAPP_RELEASE_STORE_PASSWORD']
-            keyAlias keystoreProperties['MYAPP_RELEASE_KEY_ALIAS']
-            keyPassword keystoreProperties['MYAPP_RELEASE_KEY_PASSWORD']
+            storeFile = file(props['MYAPP_RELEASE_STORE_FILE'])
+            storePassword = props['MYAPP_RELEASE_STORE_PASSWORD']
+            keyAlias = props['MYAPP_RELEASE_KEY_ALIAS']
+            keyPassword = props['MYAPP_RELEASE_KEY_PASSWORD']
         }
     }
     splits {

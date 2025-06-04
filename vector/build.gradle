@@ -76,6 +76,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release // 应用签名配置
         }
     }
 
@@ -125,6 +126,19 @@ android {
                 versionNameSuffix "-fdroid"
             }
         }
+    signingConfigs {
+        release {
+            // 使用环境变量或从 local.properties 中读取签名信息
+            def keystorePropertiesFile = rootProject.file("local.properties")
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storeFile file(keystoreProperties['MYAPP_RELEASE_STORE_FILE'])
+            storePassword keystoreProperties['MYAPP_RELEASE_STORE_PASSWORD']
+            keyAlias keystoreProperties['MYAPP_RELEASE_KEY_ALIAS']
+            keyPassword keystoreProperties['MYAPP_RELEASE_KEY_PASSWORD']
+        }
+    }
     splits {
         abi {
             enable true

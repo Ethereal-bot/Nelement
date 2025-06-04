@@ -81,9 +81,16 @@ jobs:
           fdroid.keyPassword=${{ secrets.SIGNING_KEYPASS }}
           EOF
 
+      - name: Convert ABI to proper case
+        id: abi_case_conversion
+        run: |
+          abi="${{ matrix.abi }}"
+          abi_proper_case="$(tr '[:lower:]' '[:upper:]' <<< ${abi:0:1})${abi:1}"
+          echo "::set-output name=abi_proper_case::$abi_proper_case"
+
       - name: Build signed Fdroid APK for ${{ matrix.abi }}
         run: |
-          ./gradlew clean assembleFdroid${{ matrix.abi.capitalize() }}Release $CI_GRADLE_ARG_PROPERTIES
+          ./gradlew clean assembleFdroid${{ steps.abi_case_conversion.outputs.abi_proper_case }}Release $CI_GRADLE_ARG_PROPERTIES
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v4

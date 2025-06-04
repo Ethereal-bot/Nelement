@@ -122,8 +122,10 @@ android {
     productFlavors {
         fdroid {
             dimension "distribution"
-            applicationIdSuffix ".fdroid"
-            versionNameSuffix "-fdroid"
+            if (project.hasProperty('isApplicationModule')) { // 检查是否是应用模块
+                applicationIdSuffix ".fdroid"
+                versionNameSuffix "-fdroid"
+            }
         }
         playstore {
             dimension "distribution"
